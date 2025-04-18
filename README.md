@@ -126,6 +126,71 @@ checks:
 
 ---
 
+## 📊 Implementation Steps
+
+### 1. Project Structure
+```
+aws-dq-framework/
+├── dq_framework/
+│   ├── __init__.py
+│   ├── config_loader.py
+│   ├── glue_reader.py
+│   ├── checks/
+│   │   ├── __init__.py
+│   │   ├── completeness.py
+│   │   ├── accuracy.py
+│   │   ├── consistency.py
+│   │   ├── timeliness.py
+│   │   └── uniqueness.py
+│   ├── runner.py
+│   └── utils.py
+├── examples/
+│   └── config.yaml
+├── scripts/
+│   └── dq_framework_glue_job.py
+├── setup.py
+└── README.md
+```
+
+### 2. Implementation Steps
+
+#### Step 1: Set Up Python Package
+- Create virtual environment
+- Define dependencies in `setup.py`
+- Structure module with pluggable check modules in `checks/`
+
+#### Step 2: Create Config Loader
+- `config_loader.py` parses YAML or JSON configurations
+- Loads table names, columns, check types, thresholds
+
+#### Step 3: Read Data from Glue
+- `glue_reader.py` uses `boto3` or `pyathena` to fetch data via SQL
+- Uses Glue Catalog to locate S3 paths or Redshift tables
+
+#### Step 4: Implement Check Modules
+Each check module implements a `run_check(dataframe, config)` interface:
+- `completeness.py`: Null checks
+- `accuracy.py`: Regex or reference data checks
+- `consistency.py`: Cross-field logic
+- `timeliness.py`: Timestamp freshness
+- `uniqueness.py`: Duplicate detection
+
+#### Step 5: Execute and Log Results
+- `runner.py` coordinates loading data and applying checks
+- Stores results as CSV/JSON in S3
+- Sends logs/metrics to CloudWatch
+- If thresholds breached → send alerts via SNS
+
+#### Step 6: Package & Distribute
+- Zip and upload to S3 for Glue Jobs
+- Or publish on PyPI/internal registry
+
+#### Step 7: Automate via Glue or Lambda
+- Trigger jobs periodically or on data arrival
+- Use EventBridge or CloudWatch Events for scheduling
+
+---
+
 ## ✅ Benefits
 
 - Centralized quality enforcement
