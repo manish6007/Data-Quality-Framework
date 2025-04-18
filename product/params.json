@@ -1,0 +1,35 @@
+[
+    {
+      "ParameterKey": "GlueJobName",
+      "ParameterValue": "customer-dq-job"
+    },
+    {
+      "ParameterKey": "GlueRoleArn",
+      "ParameterValue": "arn:aws:iam::123456789012:role/glue-dq-execution-role"
+    },
+    {
+      "ParameterKey": "ScriptLocation",
+      "ParameterValue": "s3://my-bucket/scripts/dq_framework_glue_job.py"
+    },
+    {
+      "ParameterKey": "ConfigPath",
+      "ParameterValue": "s3://my-bucket/configs/customers_config.yaml"
+    },
+    {
+      "ParameterKey": "DatabaseName",
+      "ParameterValue": "my_glue_database"
+    },
+    {
+      "ParameterKey": "ResultBucket",
+      "ParameterValue": "my-results-bucket"
+    },
+    {
+      "ParameterKey": "ResultPrefix",
+      "ParameterValue": "dq-results/customers"
+    },
+    {
+      "ParameterKey": "PythonLibraryS3Path",
+      "ParameterValue": "s3://my-bucket/libs/aws_dq_framework-0.1.0-py3-none-any.whl"
+    }
+  ]
+  

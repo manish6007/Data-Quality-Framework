@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Glue job to run AWS Data Quality Framework using .whl package from S3
+
+Parameters:
+  GlueJobName:
+    Type: String
+    Default: dq-framework-job
+    Description: Name of the Glue job
+
+  GlueRoleArn:
+    Type: String
+    Description: IAM role ARN with required permissions
+
+  ScriptLocation:
+    Type: String
+    Description: S3 path to trigger_glue_job.py script
+
+  ConfigPath:
+    Type: String
+    Description: S3 path to the config.yaml file
+
+  DatabaseName:
+    Type: String
+    Description: Name of the Glue catalog database to read tables from
+
+  ResultBucket:
+    Type: String
+    Description: S3 bucket to save result outputs
+
+  ResultPrefix:
+    Type: String
+    Default: dq-results
+    Description: Prefix/folder in result bucket to store results
+
+  PythonLibraryS3Path:
+    Type: String
+    Description: S3 path to the .whl file of the dq-framework package
+
+Resources:
+  DQFrameworkGlueJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Ref GlueJobName
+      Role: !Ref GlueRoleArn
+      GlueVersion: "4.0"
+      NumberOfWorkers: 5
+      WorkerType: G.1X
+      Command:
+        Name: glueetl
+        ScriptLocation: !Ref ScriptLocation
+        PythonVersion: "3"
+      DefaultArguments:
+        "--job-language": "pyspark"
+        "--CONFIG_PATH": !Ref ConfigPath
+        "--DATABASE": !Ref DatabaseName
+        "--RESULTS_BUCKET": !Ref ResultBucket
+        "--RESULTS_PREFIX": !Ref ResultPrefix
+        "--additional-python-modules": !Ref PythonLibraryS3Path
+      ExecutionProperty:
+        MaxConcurrentRuns: 1

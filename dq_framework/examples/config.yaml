@@ -1,0 +1,30 @@
+checks:
+  - table: customers
+    completeness:
+      columns: ["customer_id", "email", "signup_date"]
+
+  - table: customers
+    accuracy:
+      rules:
+        status:
+          allowed_values: ["active", "inactive", "banned"]
+        age:
+          min: 18
+          max: 100
+
+  - table: customers
+    consistency:
+      rules:
+        - name: valid_age_signup
+          expression: age > 0 AND signup_date IS NOT NULL
+        - name: id_vs_email
+          expression: customer_id IS NOT NULL AND email IS NOT NULL
+
+  - table: orders
+    timeliness:
+      columns: ["order_date", "delivery_date"]
+      threshold_days: 30
+
+  - table: customers
+    uniqueness:
+      columns: ["customer_id"]

@@ -1,0 +1,16 @@
+*aws_dq_framework.egg-info*
+*.egg-info/
+*.egg-info/*
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+__pycache__/*
+__pycache__/.DS_Store
+__pycache__/.gitkeep
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*build
